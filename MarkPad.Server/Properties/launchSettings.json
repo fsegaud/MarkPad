@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MarkPad.Server": {
+      "commandName": "Project",
+      "workingDirectory": "D:\\Git\\MarkPad\\MarkPad.Server"
+    }
+  }
+}
