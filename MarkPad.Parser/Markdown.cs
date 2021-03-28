@@ -17,6 +17,7 @@ namespace MarkPad.Parser
             Dictionary<string, string> linkReferences = Markdown.ParseLinkReferences(ref content);
 
             Markdown.LineBreaksFirstPass(ref content);
+
             Markdown.ParseHeaders(ref content);
             Markdown.ParseHorizontalRules(ref content);
             Markdown.ParseEmphasis(ref content);
@@ -26,6 +27,7 @@ namespace MarkPad.Parser
             Markdown.ParseQuotes(ref content);
             Markdown.ParseTables(ref content);
             Markdown.ParseLists(ref content);
+
             Markdown.LineBreaksSecondPass(ref content);
             Markdown.RestoreCode(ref content, codeChunks);
 

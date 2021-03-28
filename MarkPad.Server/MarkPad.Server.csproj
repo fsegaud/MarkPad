@@ -3,7 +3,17 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Authors>François Ségaud</Authors>
+    <Version>0.1-dev</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nancy" Version="2.0.0" />
+    <PackageReference Include="Nancy.Authentication.Forms" Version="2.0.0" />
+    <PackageReference Include="Nancy.Hosting.Self.Standard" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MarkPad.Parser\MarkPad.Parser.csproj" />

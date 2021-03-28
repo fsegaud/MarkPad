@@ -1,0 +1,29 @@
+@Master['master.sshtml']
+@Section['Content']
+<div id="content">
+<!-- <div id="large-content"> -->
+	<form method="POST">
+		<table style="width: 100%">
+			@If.HasName
+				<tr><td><input class="tf" class="tf" type="text" name="Name" value="@Model.Name" placeholder="Name"/></td></tr>
+			@EndIf
+			@IfNot.HasName
+				<tr><td><input class="tf" type="text" name="Name" placeholder="Name"/></td></tr>
+			@EndIf
+			@If.HasPath
+				<tr><td><input class="tf" type="text" name="Path" value="@Model.Path" placeholder="Path"/></td></tr>
+			@EndIf
+			@IfNot.HasPath
+				<tr><td><input class="tf" type="text" name="Path" placeholder="Path"/></td></tr>
+			@EndIf
+			@If.HasContent
+				<tr><td><textarea name="Content" rows="40" cols="80" wrap="off" spellcheck="false" placeholder="Content">@Model.Content</textarea></td></tr>
+			@EndIf
+			@IfNot.HasContent
+				<tr><td><textarea name="Content" rows="40" cols="80" wrap="off" spellcheck="false" placeholder="Content"></textarea></td></tr>
+			@EndIf
+			<tr><td><input type="submit" value="Create" style="font-size: 1.5em;"/> @Model.Message</td></tr>
+		</table>
+	</form>
+</div>
+@EndSection
