@@ -15,8 +15,16 @@ namespace MarkPad.Server
                 {
                     Database.GetPosts();
 
-                    string[] css = CssHelper.GetCssStyles(this.Context, CssHelper.Page.Site);
-                    return View["new", new NewModel(css)];
+                    return View["new", new NewModel(this.Context)];
+                });
+
+            this.Get(
+                "/{path*}",
+                args =>
+                {
+                    Database.GetPosts();
+
+                    return View["new", new NewModel(this.Context, args.path)];
                 });
 
             this.Post(
@@ -27,17 +35,41 @@ namespace MarkPad.Server
                     string name = this.Request.Form.Name;
                     string content = this.Request.Form.content;
 
-                    string[] css = CssHelper.GetCssStyles(this.Context, CssHelper.Page.Site);
-
                     if (string.IsNullOrEmpty(name))
                     {
-                        return View["new", new NewModel("A name is required.", name, path, content, css)];
+                        return View["new", new NewModel(this.Context, "A name is required.", name, path, content)];
                     }
 
                     Post post = Database.GetPost(path, name);
                     if (post != null)
                     {
-                        return View["new", new NewModel($"Post '{post.FullPath}' already exists!", name, path, content, css)];
+                        return View["new", new NewModel(this.Context, $"Post '{post.FullPath}' already exists!", name, path, content)];
+                    }
+
+                    post = new Post(path, name);
+                    post.Write(content);
+                    Database.InsertPost(post);
+
+                    return Response.AsRedirect($"/");
+                });
+
+            this.Post(
+                "/{path*}",
+                args =>
+                {
+                    string path = this.Request.Form.Path;
+                    string name = this.Request.Form.Name;
+                    string content = this.Request.Form.content;
+
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        return View["new", new NewModel(this.Context, "A name is required.", name, path, content)];
+                    }
+
+                    Post post = Database.GetPost(path, name);
+                    if (post != null)
+                    {
+                        return View["new", new NewModel(this.Context, $"Post '{post.FullPath}' already exists!", name, path, content)];
                     }
 
                     post = new Post(path, name);
@@ -50,13 +82,19 @@ namespace MarkPad.Server
 
         public class NewModel : BaseModel
         {
-            public NewModel(string[] css)
-                : base(css)
+            public NewModel(Nancy.NancyContext context)
+                : base(context, CssHelper.Page.Site)
             {
             }
 
-            public NewModel(string message, string name, string path, string content, string[] css)
-                : base(css)
+            public NewModel(NancyContext context, string path)
+                : base(context, CssHelper.Page.Site)
+            {
+                this.Path = path;
+            }
+
+            public NewModel(NancyContext context, string message, string name, string path, string content)
+                : base(context, CssHelper.Page.Site)
             {
                 this.Message = message;
                 this.Name = name;

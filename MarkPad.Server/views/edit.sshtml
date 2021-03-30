@@ -6,7 +6,7 @@
 		<table style="width: 100%">
 			<tr><td><input class="tf" disabled type="text" name="Name" value="@Model.Post.Name"/></td></tr>
 			<tr><td><input class="tf" type="text" name="Path" placeholder="Path" value="@Model.Post.Path"/></td></tr>
-			<tr><td><textarea name="Content" rows="40" cols="80" wrap="off" spellcheck="false" placeholder="Content">@Model.Content</textarea></td></tr>
+			<tr><td><textarea name="Content" rows="38" cols="80" wrap="off" spellcheck="false" placeholder="Content">@Model.Content</textarea></td></tr>
 			<tr><td><input type="submit" value="Save" style="font-size: 1.5em;"/> @Model.Message</td></tr>
 		</table>
 	</form>

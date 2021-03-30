@@ -16,8 +16,7 @@ namespace MarkPad.Server
                 {
                     Database.GetPosts();
 
-                    string[] css = CssHelper.GetCssStyles(this.Context, CssHelper.Page.Site);
-                    return View["index", new IndexModel(Database.GetPosts(), css)];
+                    return View["index", new IndexModel(this.Context, Database.GetPosts())];
                 });
 
             this.Get(
@@ -25,22 +24,47 @@ namespace MarkPad.Server
                 args =>
                 {
                     this.Context.Request.Session["skin"] = (string)args.skin;
-                    return Response.AsRedirect($"/");
+                    return Response.AsRedirect(this.Request.Headers.Referrer);
+                });
+
+            this.Get(
+                "/share/{id:int}/{enabled:int}",
+                args =>
+                {
+                    Post post = Database.GetPost((int)args.id);
+                    if (post != null)
+                    {
+                        post.Shared = args.enabled > 0;
+                    }
+
+                    Database.UpdatePost(post);
+
+                    return Response.AsRedirect(this.Request.Headers.Referrer);
                 });
         }
     }
 
     public abstract class BaseModel
     {
-        public string Title => Program.Title;
-        public string Version => Program.Version;
-
-        protected BaseModel(string[] css)
+        protected BaseModel(NancyContext context, CssHelper.Page page)
         {
-            this.Css = css;
+            this.Css = CssHelper.GetCssStyles(context, page);
+            this.IsLight = CssHelper.GetSkin(context) == CssHelper.Skin.Light;
         }
 
+        public virtual bool HasPost => false;
+        public virtual bool Printable => false;
+
+        public string Title => Program.Title;
+        public string Version => Program.Version;
+        public bool IsLogged => true; // TODO: implement.
+
         public string[] Css
+        {
+            get;
+        }
+
+        public bool IsLight
         {
             get;
         }
@@ -48,8 +72,8 @@ namespace MarkPad.Server
 
     public class IndexModel : BaseModel
     {
-        public IndexModel(IEnumerable<Post> posts, string[] css)
-            : base(css)
+        public IndexModel(NancyContext context, IEnumerable<Post> posts)
+            : base(context, CssHelper.Page.Site)
         {
             this.Posts = posts;
         }
@@ -59,14 +83,6 @@ namespace MarkPad.Server
             get;
         }
 
-        public IO.Directory RootDir
-        {
-            get
-            {
-                IO.Directory root = new IO.Directory("/");
-                root.Populate(this.Posts.ToArray());
-                return root;
-            }
-        }
+        public IO.Directory RootDir => IO.Directory.CreateHierarchy(this.Posts.ToArray());
     }
 }

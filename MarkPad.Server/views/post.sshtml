@@ -2,6 +2,6 @@
 @Section['Content']
 <div id="content">
 	@Model.Content
-	<br/><hr><span style="font-size: 0.75em;">@Model.Post.FullPath (@Model.Post.Id:@Model.Post.ShortGuid) Created: @Model.Post.Created Last Modified: @Model.Post.Modified. Page generated in @Model.GeneratedTime ms.</span>
+	@IfNot.Model.Printable<br/><hr><span style="font-size: 0.75em;">@Model.Post.FullPath (@Model.Post.Id:@Model.Post.ShortGuid) Created: @Model.Post.Created Last Modified: @Model.Post.Modified. Page generated in @Model.GeneratedTime ms. MarkPad @Model.Version</span>@EndIf
 </div>
 @EndSection

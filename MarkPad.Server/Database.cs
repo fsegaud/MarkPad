@@ -104,6 +104,8 @@ namespace MarkPad.Server
 
             this.Guid = System.Guid.NewGuid();
             this.Created = this.Modified = System.DateTime.Now;
+
+            this.Shared = false;
         }
 
         [SQLite.PrimaryKey, SQLite.AutoIncrement]
@@ -127,8 +129,7 @@ namespace MarkPad.Server
             set;
         }
 
-        [SQLite.Ignore]
-        public string FullPath => System.IO.Path.Combine(this.Path, this.Name).FixPathSlashes();
+        [SQLite.Ignore] public string FullPath => System.IO.Path.Combine(this.Path, this.Name).FixPathSlashes();
 
         public System.Guid Guid
         {
@@ -136,8 +137,7 @@ namespace MarkPad.Server
             set;
         }
 
-        [SQLite.Ignore]
-        public string ShortGuid => this.Guid.ToString().Substring(0, 8);
+        [SQLite.Ignore] public string ShortGuid => this.Guid.ToString().Substring(0, 8);
 
         public System.DateTime Created
         {
@@ -146,6 +146,12 @@ namespace MarkPad.Server
         }
 
         public System.DateTime Modified
+        {
+            get;
+            set;
+        }
+
+        public bool Shared
         {
             get;
             set;

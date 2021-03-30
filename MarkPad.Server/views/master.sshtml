@@ -10,6 +10,7 @@
 		<title>@Model.Title (@Model.Version)</title>
 	</head>
 	<body>
+		@Partial['toolbar', Model];
 		@Section['Content']
 	<body>
 </html>

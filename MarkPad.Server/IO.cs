@@ -15,14 +15,27 @@ namespace MarkPad.Server.IO
 
         public Post[] Files => this.files.Values.ToArray();
 
-        public Directory(string name)
+        public Directory(string path, string name)
         {
+            this.Path = path;
             this.Name = name;
+        }
+
+        public string Path
+        {
+            get;
         }
 
         public string Name
         {
             get;
+        }
+
+        public static Directory CreateHierarchy(Post[] files)
+        {
+            Directory root = new Directory(string.Empty, "/");
+            root.Populate(files);
+            return root;
         }
 
         public bool HasDirectory(string name)
@@ -43,7 +56,7 @@ namespace MarkPad.Server.IO
 
         public Directory CreateDirectory(string name)
         {
-            Directory directory = new Directory(name);
+            Directory directory = new Directory(System.IO.Path.Combine(this.Path, name), name);
             this.directories.Add(name, directory);
             return directory;
         }

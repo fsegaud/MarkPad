@@ -16,7 +16,7 @@ namespace MarkPad.Server
             Post
         }
 
-        public static string[] GetCssPaths(Nancy.NancyContext context, Page page)
+        public static Skin GetSkin(Nancy.NancyContext context)
         {
             CssHelper.Skin skin = CssHelper.Skin.Light;
             if (context.Request.Session["skin"] != null)
@@ -25,16 +25,29 @@ namespace MarkPad.Server
                 skin = System.Enum.Parse<CssHelper.Skin>(skinName, true);
             }
 
+            return skin;
+        }
+
+        public static string[] GetCssPaths(Nancy.NancyContext context, Page page)
+        {
+            Skin skin = CssHelper.GetSkin(context);
             switch (skin)
+
             {
                 case Skin.Light:
                     switch (page)
                     {
                         case Page.Site:
-                            return new[] { "styles/site-light.css" };
+                            return new[]
+                            {
+                                "styles/site-light.css"
+                            };
 
                         case Page.Post:
-                            return new[] { "styles/site-light.css", "styles/markdown-light.css" };
+                            return new[]
+                            {
+                                "styles/site-light.css", "styles/markdown-light.css"
+                            };
 
                         default:
                             throw new System.ArgumentOutOfRangeException(nameof(page), page, null);
@@ -44,10 +57,16 @@ namespace MarkPad.Server
                     switch (page)
                     {
                         case Page.Site:
-                            return new[] { "styles/site-dark.css" };
+                            return new[]
+                            {
+                                "styles/site-dark.css"
+                            };
 
                         case Page.Post:
-                            return new[] { "styles/site-dark.css", "styles/markdown-dark.css" };
+                            return new[]
+                            {
+                                "styles/site-dark.css", "styles/markdown-dark.css"
+                            };
 
                         default:
                             throw new System.ArgumentOutOfRangeException(nameof(page), page, null);

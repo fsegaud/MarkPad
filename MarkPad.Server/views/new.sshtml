@@ -17,10 +17,10 @@
 				<tr><td><input class="tf" type="text" name="Path" placeholder="Path"/></td></tr>
 			@EndIf
 			@If.HasContent
-				<tr><td><textarea name="Content" rows="40" cols="80" wrap="off" spellcheck="false" placeholder="Content">@Model.Content</textarea></td></tr>
+				<tr><td><textarea name="Content" rows="38" cols="80" wrap="off" spellcheck="false" placeholder="Content">@Model.Content</textarea></td></tr>
 			@EndIf
 			@IfNot.HasContent
-				<tr><td><textarea name="Content" rows="40" cols="80" wrap="off" spellcheck="false" placeholder="Content"></textarea></td></tr>
+				<tr><td><textarea name="Content" rows="38" cols="80" wrap="off" spellcheck="false" placeholder="Content"></textarea></td></tr>
 			@EndIf
 			<tr><td><input type="submit" value="Create" style="font-size: 1.5em;"/> @Model.Message</td></tr>
 		</table>

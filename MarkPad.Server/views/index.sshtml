@@ -2,9 +2,10 @@
 @Section['Content']
 <div id="content">
 	<h1>MarkPad</h1>
-	<a href="/new" title="New file" class="icon">📝</a> | <a href="/skin/light" title="Light skin" class="icon">🌞</a> <a href="/skin/dark" title=Dark skin" class="icon">🌚</a><hr>
+	<hr>
 	<ul class="directory">
 		@Partial['tree', Model.RootDir];
 	</ul>
+	<hr>
 </div>
 @EndSection
