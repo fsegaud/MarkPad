@@ -40,7 +40,7 @@ namespace MarkPad.Parser
 
             content = Regex.Replace(
                 content,
-                @"^```(?<lang>[\w\d#+-]+)(?<text>.*?)^```",
+                @"^```(?<lang>[\w\d#+-]+)?(?<text>.*?)^```",
                 m =>
                 {
                     codeChunks.Add($"%%LANG{m.Groups["lang"]}%<br/>" + m.Groups["text"].Value.Replace("<", "&lt;").Replace(">", "&gt;").Replace("\t", "    ").Trim('\n') /*.Replace("\n", "<br/>")*/);
@@ -148,7 +148,7 @@ namespace MarkPad.Parser
 
         private static void ParseLinks(ref string content, Dictionary<string, string> linkReferences)
         {
-            content = Regex.Replace(content, "(?<=(^|[^!]))\\[(?<label>.+?)\\]\\((?<url>[^\\s]*)(\\s\")?(?<title>.*?)\"?\\)", m => $"<a href=\"{m.Groups["url"]}\" title=\"{m.Groups["title"]}\">{m.Groups["label"]}</a>", RegexOptions.Multiline);
+            content = Regex.Replace(content, "(?<=(^|[^!]))\\[(?<label>.+?)\\]\\((?<url>[^\\s)]*)(\\s\")?(?<title>.*?)\"?\\)", m => $"<a href=\"{m.Groups["url"]}\" title=\"{m.Groups["title"]}\">{m.Groups["label"]}</a>", RegexOptions.Multiline);
 
             content = Regex.Replace(
                 content,
