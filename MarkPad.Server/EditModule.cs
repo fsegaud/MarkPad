@@ -1,14 +1,20 @@
 ﻿// EditModule.cs
 
-using Nancy;
-
 namespace MarkPad.Server
 {
+    using Nancy;
+    using Nancy.Security;
+
     public class EditModule : Nancy.NancyModule
     {
         public EditModule()
             : base("/edit")
         {
+            if (Program.RequireAuth)
+            {
+                this.RequiresAuthentication();
+            }
+
             this.Get(
                 "/{id:int}",
                 args =>
@@ -32,15 +38,13 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
-                    string path = this.Request.Form.Path;
                     string content = this.Request.Form.Content;
                     
-                    post.Path = path;
                     post.Modified = System.DateTime.Now;
                     post.Write(content);
                     Database.UpdatePost(post);
 
-                    return Response.AsRedirect($"/");
+                    return Response.AsRedirect($"/{post.FullPath}");
                 });
         }
 
@@ -52,11 +56,15 @@ namespace MarkPad.Server
                 this.Post = post;
             }
 
+            public override bool EditMode => true;
+
+            public override string Subtitle => Post.Name;
+
             public Post Post
             {
                 get;
             }
-
+            
             public string Content => Post.Read();
         }
     }

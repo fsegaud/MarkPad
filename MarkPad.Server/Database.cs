@@ -47,9 +47,9 @@ namespace MarkPad.Server
         {
             try
             {
-                return Database.connection.Get<Post>(p => p.Id == id);
+                return Database.connection.Get<Post>(p => p.Id == id && !p.Archived);
             }
-            catch (System.InvalidOperationException e)
+            catch (System.InvalidOperationException)
             {
                 return null;
             }
@@ -57,10 +57,12 @@ namespace MarkPad.Server
 
         public static Post GetPost(string path, string name)
         {
-            path = path.FixPathSlashes();
+            path = path.FixPathSlashes().EscapeDB();
+            name = name.EscapeDB();
+
             try
             {
-                return Database.connection.Get<Post>(p => p.Path == path && p.Name == name);
+                return Database.connection.Get<Post>(p => p.Path == path && p.Name == name && !p.Archived);
             }
             catch (System.InvalidOperationException)
             {
@@ -74,9 +76,16 @@ namespace MarkPad.Server
             return GetPost(System.IO.Path.GetDirectoryName(fullpath), System.IO.Path.GetFileName(fullpath));
         }
 
-        public static IEnumerable<Post> GetPosts()
+        public static IEnumerable<Post> GetPosts(bool archived = false)
         {
-            return Database.connection.Query<Post>("SELECT * FROM Posts;");
+            if (archived)
+            {
+                return Database.connection.Query<Post>($"SELECT * FROM Posts WHERE Archived = '1';");
+            }
+            else
+            {
+                return Database.connection.Query<Post>($"SELECT * FROM Posts WHERE Archived IS NULL OR Archived = '0';");
+            }
         }
 
         public static void InsertPost(Post post)
@@ -99,13 +108,14 @@ namespace MarkPad.Server
 
         public Post(string path, string name)
         {
-            this.Path = path.EscapeBlankSpaces();
+            this.Path = path.EscapeBlankSpaces().FixPathSlashes().TrimEnd('/');
             this.Name = name.EscapeBlankSpaces();
 
             this.Guid = System.Guid.NewGuid();
             this.Created = this.Modified = System.DateTime.Now;
 
             this.Shared = false;
+            this.Archived = false;
         }
 
         [SQLite.PrimaryKey, SQLite.AutoIncrement]
@@ -115,7 +125,7 @@ namespace MarkPad.Server
             set;
         }
 
-        [SQLite.MaxLength(64)]
+        [SQLite.MaxLength(64), SQLite.NotNull]
         public string Name
         {
             get;
@@ -129,15 +139,18 @@ namespace MarkPad.Server
             set;
         }
 
-        [SQLite.Ignore] public string FullPath => System.IO.Path.Combine(this.Path, this.Name).FixPathSlashes();
+        [SQLite.Ignore]
+        public string FullPath => System.IO.Path.Combine(this.Path, this.Name).FixPathSlashes();
 
+        [SQLite.NotNull]
         public System.Guid Guid
         {
             get;
             set;
         }
 
-        [SQLite.Ignore] public string ShortGuid => this.Guid.ToString().Substring(0, 8);
+        [SQLite.Ignore]
+        public string ShortGuid => this.Guid.ToString().Substring(0, 8);
 
         public System.DateTime Created
         {
@@ -145,13 +158,22 @@ namespace MarkPad.Server
             set;
         }
 
+        [SQLite.NotNull]
         public System.DateTime Modified
         {
             get;
             set;
         }
 
+        [SQLite.NotNull]
         public bool Shared
+        {
+            get;
+            set;
+        }
+
+        [SQLite.NotNull]
+        public bool Archived
         {
             get;
             set;
@@ -162,7 +184,7 @@ namespace MarkPad.Server
     {
         public static string Read(this Post post)
         {
-            string filePath = System.IO.Path.Combine(Program.PostDirectory, $"{post.Guid}{Program.PostExtension}");
+            string filePath = System.IO.Path.Combine(Program.PostDirectory, $"{post.Guid}.{Program.PostExtension}").TrimEnd('.');
             if (!System.IO.File.Exists(filePath))
             {
                 return null;
@@ -178,7 +200,7 @@ namespace MarkPad.Server
                 System.IO.Directory.CreateDirectory(Program.PostDirectory);
             }
 
-            string filePath = System.IO.Path.Combine(Program.PostDirectory, $"{post.Guid}{Program.PostExtension}");
+            string filePath = System.IO.Path.Combine(Program.PostDirectory, $"{post.Guid}.{Program.PostExtension}").TrimEnd('.');
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.File.Delete(filePath);
@@ -198,6 +220,11 @@ namespace MarkPad.Server
         public static string EscapeBlankSpaces(this string str)
         {
             return str.Replace(' ', '-');
+        }
+
+        public static string EscapeDB(this string str)
+        {
+            return str.Replace("'", "''");
         }
     }
 }

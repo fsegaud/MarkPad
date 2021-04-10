@@ -95,6 +95,8 @@ pre.code {
     background-color: #171e1f;
     padding: 1em;
     margin: 1em 0;
+	overflow-y: scroll;
+	overflow-y: hidden;
 }
 
 blockquote {

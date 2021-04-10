@@ -5,6 +5,7 @@ namespace MarkPad.Server
     using System.Collections.Generic;
     using System.Linq;
     using Nancy;
+    using Nancy.Security;
 
     public class SiteModule : Nancy.NancyModule
     {
@@ -14,6 +15,11 @@ namespace MarkPad.Server
                 "/",
                 args =>
                 {
+                    if (Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
+                    }
+
                     Database.GetPosts();
 
                     return View["index", new IndexModel(this.Context, Database.GetPosts())];
@@ -24,6 +30,7 @@ namespace MarkPad.Server
                 args =>
                 {
                     this.Context.Request.Session["skin"] = (string)args.skin;
+
                     return Response.AsRedirect(this.Request.Headers.Referrer);
                 });
 
@@ -31,15 +38,40 @@ namespace MarkPad.Server
                 "/share/{id:int}/{enabled:int}",
                 args =>
                 {
+                    if (Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
+                    }
+
                     Post post = Database.GetPost((int)args.id);
                     if (post != null)
                     {
                         post.Shared = args.enabled > 0;
+                        Database.UpdatePost(post);
                     }
 
-                    Database.UpdatePost(post);
-
                     return Response.AsRedirect(this.Request.Headers.Referrer);
+                });
+
+            this.Get(
+                "/archive/{id:int}",
+                args =>
+                {
+                    if (Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
+                    }
+
+                    Post post = Database.GetPost((int)args.id);
+                    if (post != null)
+                    {
+                        post.Shared = false;
+                        post.Archived = true;
+                        post.Name = $"{post.ShortGuid}-{post.Name}";
+                        Database.UpdatePost(post);
+                    }
+
+                    return Response.AsRedirect("/");
                 });
         }
     }
@@ -50,14 +82,22 @@ namespace MarkPad.Server
         {
             this.Css = CssHelper.GetCssStyles(context, page);
             this.IsLight = CssHelper.GetSkin(context) == CssHelper.Skin.Light;
+            this.IsLogged = !Program.RequireAuth || context.IsAuthenticated();
         }
 
+        public virtual bool EditMode => false;
         public virtual bool HasPost => false;
         public virtual bool Printable => false;
 
+        public virtual string Subtitle => string.Empty;
+
         public string Title => Program.Title;
         public string Version => Program.Version;
-        public bool IsLogged => true; // TODO: implement.
+        
+        public bool IsLogged
+        {
+            get;
+        }
 
         public string[] Css
         {
@@ -78,11 +118,13 @@ namespace MarkPad.Server
             this.Posts = posts;
         }
 
+        public override string Subtitle => "Index";
+
+        public IO.Directory RootDir => IO.Directory.CreateHierarchy(this.Posts.ToArray());
+
         public IEnumerable<Post> Posts
         {
             get;
         }
-
-        public IO.Directory RootDir => IO.Directory.CreateHierarchy(this.Posts.ToArray());
     }
 }

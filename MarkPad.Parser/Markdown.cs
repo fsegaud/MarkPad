@@ -14,6 +14,7 @@ namespace MarkPad.Parser
             content = content.Replace("\r\n", "\n");
 
             IList<string> codeChunks = Markdown.IsolateAndParseCode(ref content);
+            IList<string> paths = Markdown.ParseImagesAndIsolatePaths(ref content);
             Dictionary<string, string> linkReferences = Markdown.ParseLinkReferences(ref content);
 
             Markdown.LineBreaksFirstPass(ref content);
@@ -21,7 +22,6 @@ namespace MarkPad.Parser
             Markdown.ParseHeaders(ref content);
             Markdown.ParseHorizontalRules(ref content);
             Markdown.ParseEmphasis(ref content);
-            Markdown.ParseImages(ref content);
             Markdown.ParseLinks(ref content, linkReferences);
             Markdown.ParseCode(ref content);
             Markdown.ParseQuotes(ref content);
@@ -30,6 +30,7 @@ namespace MarkPad.Parser
 
             Markdown.LineBreaksSecondPass(ref content);
             Markdown.RestoreCode(ref content, codeChunks);
+            Markdown.RestoreImagePaths(ref content, paths);
 
             return content;
         }
@@ -119,9 +120,26 @@ namespace MarkPad.Parser
             content = Regex.Replace(content, @"(?<=<img.*?>\s*)<br/>(?=.<img)", m => string.Empty, RegexOptions.Multiline | RegexOptions.Singleline); // lines between img
         }
 
-        private static void ParseImages(ref string content)
+        private static IList<string> ParseImagesAndIsolatePaths(ref string content)
         {
-            content = Regex.Replace(content, "!\\[(?<text>.*?)\\]\\((?<url>.*?)(\\s\"(?<title>.*?)\")?\\)", m => $"<img src=\"{m.Groups["url"]}\" alt=\"{m.Groups["text"]}\" title=\"{m.Groups["title"]}\">", RegexOptions.Multiline);
+            List<string> paths = new List<string>();
+
+            content = Regex.Replace(
+                content, 
+                "!\\[(?<text>.*?)\\]\\((?<url>.*?)(\\s\"(?<title>.*?)\")?\\)", 
+                m =>
+                {
+                    paths.Add(m.Groups["url"].Value);
+                    return $"<img src=\"%PATH{paths.Count - 1}%\" alt=\"{m.Groups["text"]}\" title=\"{m.Groups["title"]}\">";
+                }, 
+                RegexOptions.Multiline);
+
+            return paths;
+        }
+
+        private static void RestoreImagePaths(ref string content, IList<string> paths)
+        {
+            content = Regex.Replace(content, @"%PATH(?<index>\d*)%", m => paths[int.Parse(m.Groups["index"].Value)], RegexOptions.Multiline);
         }
 
         private static void ParseHeaders(ref string content)

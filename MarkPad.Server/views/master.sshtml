@@ -7,7 +7,7 @@
 				@Current
 			@EndEach
 		</style>
-		<title>@Model.Title (@Model.Version)</title>
+		<title>@Model.Title | @Model.Subtitle</title>
 	</head>
 	<body>
 		@Partial['toolbar', Model];

@@ -1,11 +1,11 @@
 <li>
-📂 <span class="post-name">@Model.Name</span><span class="post-menu"><a href="/new/@Model.Path" title="New" class="icon">📝</a></span>
+📂 <span class="post-name">@Model.Name</span><span class="post-menu"><a href="/new/@Model.Path" title="New" class="icon">➕</a></span>
 <ul>
 @Each.Model.Directories
 	@Partial['tree', @Current];
 @EndEach
 @Each.Model.Files
-	<li><span class="post-name">@If.Shared🌍@EndIf@IfNot.Shared📰@EndIf <a href="/@Current.FullPath">@Current.Name</a></span><span class="post-menu"><a href="/edit/@Current.Id" title="Edit" class="icon">📝</a><a href="/@Current.FullPath/raw" title="Raw file" class="icon">📄</a><a href="/id/@Current.Id" title="Permalink" class="icon">🔗</a>@If.Shared<a href="/share/@Current.Id/0" title="Stop sharing" class="icon">🌑</a>@EndIf@IfNot.Shared<a href="/share/@Current.Id/1" title="Share" class="icon">🌍</a>@EndIf<a href="/recycle/@Current.Id" title="Recycle" class="icon">🔥</a></span></li>
+	<li><span class="post-name">@If.Shared🌍@EndIf@IfNot.Shared📰@EndIf <a href="/@Current.FullPath">@Current.Name</a></span><span class="post-menu"><a href="/edit/@Current.Id" title="Edit" class="icon">📝</a><a href="/@Current.FullPath/raw" title="Raw file" class="icon">📄</a><a href="/id/@Current.Id" title="Permalink" class="icon">🔗</a>@If.Shared<a href="/share/@Current.Id/0" title="Stop sharing" class="icon">🌑</a>@EndIf@IfNot.Shared<a href="/share/@Current.Id/1" title="Share" class="icon">🌍</a>@EndIf<a href="/archive/@Current.Id" title="Archive" class="icon">📦</a></span></li>
 @EndEach
 </ul>
 </li>

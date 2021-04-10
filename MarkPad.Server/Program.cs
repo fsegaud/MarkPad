@@ -4,23 +4,33 @@ namespace MarkPad.Server
 {
     internal class Program
     {
-        public const string Version = "v0.1-dev";
-
         public const string Title = "MarkPad";
         public const string ListenUri = "http://localhost";
-        public const string PublicUri = "http://localhost";
+        public const int MaxConnections = 16;
+        public const bool EnableTraces = true;
+
         public const string DatabasePath = "markpad.db";
         public const string DatabasePrevPath = "markpad.prev.db";
         public const string PostDirectory = "posts";
-        public const string PostExtension = ".md";
-        public const int MaxConnections = 16;
-        public const bool EnableTraces = true;
-        public const CssHelper.Skin DefaultSkin = CssHelper.Skin.Dark;
+        public const string PostExtension = "md";
+        public static string[] UploadExtensions = { "jpg", "jpeg", "png", "gif", "webp", "svg" };
+
+        public const bool RequireAuth = true;
+        public const string Username = "admin";
+        public const string Password = "yKkTF9ZUGOJIltYsYQyy6/qPW0EGK5+9k3ZrtPbLTh1hEqT9";
+
+        public const string Version = "v0.1-dev";
 
         public static bool ExitRequest = false;
 
         private static void Main(string[] args)
         {
+            if (args.Length == 2 && (args[0] == "-p" || args[0] == "--hash-password"))
+            {
+                System.Console.WriteLine(PasswordHelper.GetHash(args[1]));
+                return;
+            }
+
             System.Console.Write($"Connecting to database '{DatabasePath}'... ");
             Database.Connect(DatabasePath, DatabasePrevPath);
             //Database.CreateTestDataSet(true);

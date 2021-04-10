@@ -9,17 +9,18 @@ body {
 }
 
 div#content {
-    background-color: #111;
-    width: 60em;
-    margin: 0 auto;
-    padding: 1em;
+	background-color: #111;
 	text-align: justify;
+	padding: 1em;
 }
 
-div#large-content {
-    background-color: #111;
+div.small-content {
+    width: 60em;
+    margin: 0 auto;
+}
+
+div.large-content {
     margin: 0 8px;
-    padding: 1em;
 }
 
 div#toolbar-container {
@@ -89,7 +90,7 @@ a.icon {
 	
 textarea {
 	font-family: Consolas;
-    border: 1px solid #333;
+    border: 1px dashed #222;
     border-radius: 4px;
     background-color: #181818;
 	color: #ddd;
@@ -97,13 +98,23 @@ textarea {
 	width: 100%;
 }
 
+textarea:focus {
+	border: 1px solid #222;
+	outline: none;
+}
+
 input.tf {
-    border: 1px solid #333;
+    border: 1px dashed #222;
     border-radius: 4px;
     background-color: #181818;
 	color: #ddd;
 	font-size: 1.5em;
 	width: 100%;
+}
+
+input.tf:focus {
+	border: 1px solid #222;
+	outline: none;
 }
 
 span.post-name {

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<style>
+			body {
+				color: #444;
+			}
+			
+			div#container {				
+				font-family: 'Open Sans',Lato,sans-serif;
+				text-align: center;
+				position: absolute; 
+				top: 45%; 
+				left: 50%; 
+				transform: 
+				translate(-50%, -50%); 
+				width: 30em;
+			}
+			
+			div#title {
+				font-weight: bolder;
+				font-size: 8em;
+				letter-spacing: -0.13em;
+			}
+			
+			div#subtitle {
+				font-weight: 100;
+				font-size: 2em;
+				letter-spacing: 0.16em;
+				margin-left: 0.5em;
+			}
+		</style>
+		<title>MarkPad | Not Found</title>
+	</head>
+	<body>
+		<div id="container">
+			<div id="title">Oops <span style="color: black;">: (</span></div>
+			<div id="subtitle">Page Not Found</div>
+		</div>
+	</body>
+</html>

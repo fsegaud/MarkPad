@@ -1,7 +1,6 @@
 @Master['master.sshtml']
 @Section['Content']
-<div id="content">
-<!-- <div id="large-content"> -->
+<div id="content" class="small-content">
 	<form method="POST">
 		<table style="width: 100%">
 			@If.HasName

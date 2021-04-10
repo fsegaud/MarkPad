@@ -1,12 +1,50 @@
 <div id="toolbar-container">
-	<span class="toolbar">
-		@IfNot.Model.Printable
+	@IfNot.Model.Printable
+		<!-- Post Toolbar -->
+		@If.Model.HasPost
 			@If.Model.IsLogged
-				@If.Model.HasPost<a href="/edit/@Model.Post.Id" title="Edit" class="icon">📝</a><a href="/@Model.Post.FullPath/raw" title="Raw file" class="icon">📄</a><a href="/@Model.Post.FullPath/print" title="Printable version" class="icon">📠</a><a href="/id/@Model.Post.Id" title="Permalink" class="icon">🔗</a>@If.Model.Post.Shared<a href="/share/@Model.Post.Id/0" title="Stop sharing" class="icon">🌍</a>@EndIf@IfNot.Model.Post.Shared<a href="/share/@Model.Post.Id/1" title="Share" class="icon">🌑</a>@EndIf<a href="/recycle/@Model.Post.Id" title="Recycle" class="icon">🔥</a> | @EndIf<a href="/" title="Home" class="icon">🏠</a><a href="/new" title="New" class="icon">➕</a>@If.Model.IsLight<a href="/skin/dark" title="Dark skin" class="icon">🌗</a>@EndIf@IfNot.Model.IsLight<a href="/skin/light" title="Light skin" class="icon">🌓</a>@EndIf<a href="/logout" title="Logout" class="icon">🔴</a>
+				<span id="post-toolbar" class="toolbar" style="float: left;">
+					<a href="/edit/@Model.Post.Id" title="Edit" class="icon">📝</a><a href="/@Model.Post.FullPath/raw" title="Raw file" class="icon">📄</a><a href="/@Model.Post.FullPath/print" title="Printable version" class="icon">📠</a><a href="/id/@Model.Post.Id" title="Permalink" class="icon">🔗</a>@If.Model.Post.Shared<a href="/share/@Model.Post.Id/0" title="Stop sharing" class="icon">🌍</a>@EndIf@IfNot.Model.Post.Shared<a href="/share/@Model.Post.Id/1" title="Share" class="icon">🌑</a>@EndIf<a href="/archive/@Model.Post.Id" title="Archive" class="icon">📦</a>
+				</span>
+				<span id="enlarge-toolbar" class="toolbar" style="float: left;">
+					<a href="javascript:enlarge()" title="Enlarge" class="icon">🍆</a>
+				</span>
 			@EndIf
 			@IfNot.Model.IsLogged
-				@If.Model.HasPost<a href="/@Model.Post.FullPath/raw" title="Raw file" class="icon">📄</a><a href="/@Model.Post.FullPath/print" title="Printable version" class="icon">📠</a> | @EndIf<a href="/" title="Home" class="icon">🏠</a>@If.Model.IsLight<a href="/skin/dark" title="Dark skin" class="icon">🌗</a>@EndIf@IfNot.Model.IsLight<a href="/skin/light" title="Light skin" class="icon">🌓</a>@EndIf
+				<span id="post-toolbar" class="toolbar" style="float: left;">
+					<a href="/@Model.Post.FullPath/raw" title="Raw file" class="icon">📄</a><a href="/@Model.Post.FullPath/print" title="Printable version" class="icon">📠</a><a href="/id/@Model.Post.Id" title="Permalink" class="icon">🔗</a>
+				</span>
+				<span id="enlarge-toolbar" class="toolbar" style="float: left;">
+					<a href="javascript:enlarge()" title="Enlarge" class="icon">🍆</a>
+				</span>
 			@EndIf
 		@EndIf
-	</span>
+		<!-- Edit toolbar -->
+		@If.Model.EditMode
+			<span id="edit-toolbar" class="toolbar" style="float: left;">
+				<a href="/upload" title="Upload" class="icon" target="popup" onclick="window.open('../upload','name','width=800,height=150')">📷</a>
+			</span>
+			<span id="enlarge-toolbar" class="toolbar" style="float: left;">
+				<a href="javascript:enlarge()" title="Enlarge" class="icon">🍆</a>
+			</span>
+		@EndIf
+		<!-- Global toolbar -->
+		<span id="global-toolbar" class="toolbar" style="float: right;">
+			@If.Model.IsLogged
+				<a href="/" title="Home" class="icon">🏠</a><a href="/new" title="New" class="icon">➕</a>@If.Model.IsLight<a href="/skin/dark" title="Dark skin" class="icon">🌗</a>@EndIf@IfNot.Model.IsLight<a href="/skin/light" title="Light skin" class="icon">🌓</a>@EndIf<a href="/admin" title="Admin" class="icon">🔧</a><a href="/logout" title="Logout" class="icon">🔴</a>
+			@EndIf
+			@IfNot.Model.IsLogged
+				<a href="/" title="Home" class="icon">🏠</a>@If.Model.IsLight<a href="/skin/dark" title="Dark skin" class="icon">🌗</a>@EndIf@IfNot.Model.IsLight<a href="/skin/light" title="Light skin" class="icon">🌓</a>@EndIf<a href="/login" title="Login">🙋</a>
+			@EndIf
+		</span>
+		<br/>
+	@EndIf
 </div>
+
+<script>
+	function enlarge() {
+		document.getElementById("content").classList.remove('small-content');
+		document.getElementById("content").classList.add('large-content');
+		document.getElementById("enlarge-toolbar").hidden = true;
+	}
+</script>

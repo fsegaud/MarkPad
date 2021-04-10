@@ -1,12 +1,17 @@
 ﻿// PostModule.cs
 
+using Nancy;
+
 namespace MarkPad.Server
 {
+    using Nancy.Security;
+
     public class PostModule : Nancy.NancyModule
     {
         public PostModule()
             : base("/")
         {
+
             this.Get(
                 "/{fullpath*}",
                 args =>
@@ -15,6 +20,11 @@ namespace MarkPad.Server
                     if (post == null)
                     {
                         return Nancy.HttpStatusCode.NotFound;
+                    }
+
+                    if (!post.Shared && Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
                     }
 
                     System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
@@ -33,6 +43,11 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
+                    if (!post.Shared && Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
+                    }
+
                     System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
                     string html = MarkPad.Parser.Markdown.ToHTML(post.Read());
 
@@ -49,6 +64,11 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
+                    if (!post.Shared && Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
+                    }
+
                     return post.Read();
                 });
 
@@ -62,6 +82,11 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
+                    if (!post.Shared && Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
+                    }
+
                     return post.Read();
                 });
 
@@ -73,6 +98,11 @@ namespace MarkPad.Server
                     if (post == null)
                     {
                         return Nancy.HttpStatusCode.NotFound;
+                    }
+
+                    if (!post.Shared && Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
                     }
 
                     System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
@@ -89,6 +119,11 @@ namespace MarkPad.Server
                     if (post == null)
                     {
                         return Nancy.HttpStatusCode.NotFound;
+                    }
+
+                    if (!post.Shared && Program.RequireAuth)
+                    {
+                        this.RequiresAuthentication();
                     }
 
                     System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
@@ -115,6 +150,8 @@ namespace MarkPad.Server
         public override bool HasPost => this.Post != null;
 
         public override bool Printable => this.printable && this.HasPost;
+
+        public override string Subtitle => this.HasPost ? this.Post.Name : "New";
 
         public Post Post
         {

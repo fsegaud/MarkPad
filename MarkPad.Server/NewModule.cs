@@ -1,14 +1,20 @@
 ﻿// NewModule.cs
 
-using Nancy;
-
 namespace MarkPad.Server
 {
+    using Nancy;
+    using Nancy.Security;
+
     public class NewModule : Nancy.NancyModule
     {
         public NewModule()
             : base("/new")
         {
+            if (Program.RequireAuth)
+            {
+                this.RequiresAuthentication();
+            }
+
             this.Get(
                 "/",
                 args =>
@@ -50,7 +56,7 @@ namespace MarkPad.Server
                     post.Write(content);
                     Database.InsertPost(post);
 
-                    return Response.AsRedirect($"/");
+                    return Response.AsRedirect($"/{post.FullPath}");
                 });
 
             this.Post(
@@ -76,7 +82,7 @@ namespace MarkPad.Server
                     post.Write(content);
                     Database.InsertPost(post);
 
-                    return Response.AsRedirect($"/");
+                    return Response.AsRedirect($"/{post.FullPath}");
                 });
         }
 
@@ -101,7 +107,11 @@ namespace MarkPad.Server
                 this.Path = path;
                 this.Content = content;
             }
-            
+
+            public override bool EditMode => true;
+
+            public override string Subtitle => this.HasName ? this.Name : "New";
+
             public string Name
             {
                 get;

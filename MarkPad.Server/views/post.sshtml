@@ -1,6 +1,6 @@
 @Master['master.sshtml']
 @Section['Content']
-<div id="content">
+<div id="content" class="small-content">
 	@Model.Content
 	@IfNot.Model.Printable<br/><hr><span style="font-size: 0.75em;">@Model.Post.FullPath (@Model.Post.Id:@Model.Post.ShortGuid) Created: @Model.Post.Created Last Modified: @Model.Post.Modified. Page generated in @Model.GeneratedTime ms. MarkPad @Model.Version</span>@EndIf
 </div>

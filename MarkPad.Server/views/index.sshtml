@@ -1,6 +1,6 @@
 @Master['master.sshtml']
 @Section['Content']
-<div id="content">
+<div id="content" class="small-content">
 	<h1>MarkPad</h1>
 	<hr>
 	<ul class="directory">
