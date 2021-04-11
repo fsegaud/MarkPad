@@ -17,7 +17,11 @@
 			@EndIf
 			@IfNot.Model.Error
 				@If.Model.Uploaded
-					<input class="tf" disabled type="text" name="Name" style="font-size: 1em;" value="@Model.Link"/><br/><br/>
+					<table style="width: 100%">
+						<tr><td>Link</td><td style="width: 100%"><input class="tf" disabled type="text" name="Name" style="font-size: 1em;" value="@Model.LinkSyntax"/></td></tr>
+						<tr><td>Image</td><td style="width: 100%"><input class="tf" disabled type="text" name="Name" style="font-size: 1em;" value="@Model.ImageSyntax"/></td></tr>
+					</table>
+					<br/>
 					<button onclick="window.close()">Close</button>
 				@EndIf
 				@IfNot.Model.Uploaded

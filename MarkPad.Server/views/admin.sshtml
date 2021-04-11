@@ -2,7 +2,16 @@
 @Section['Content']
 	<div id="content" class="small-content">
 		<h1>Admin</h1>
-		<hr>
-		<hr>
+		<h2>Configuration</h2>
+		<pre class="code">
+@Model.ConfigContent
+		</pre>
+		<h2>Archives</h2>
+		<table>
+			<thead><td>Path</td><td>Name</td><td></td></thead>
+			@Each.Model.Posts
+			<tr><td>@Current.Path</td><td>@Current.Name</td><td><a href="/restore/@Current.Id">Restore</a></td></tr>
+			@EndEach
+		</table>
 	</div>
 @EndSection

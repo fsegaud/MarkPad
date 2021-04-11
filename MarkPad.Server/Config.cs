@@ -19,7 +19,7 @@ namespace MarkPad.Server
         public static string DatabasePrevPath => Config.userConfig != null ? Config.userConfig.DatabasePrevPath : "markpad.prev.db";
         public static string PostDirectory => Config.userConfig != null ? Config.userConfig.PostDirectory : "posts";
         public static string PostExtension => Config.userConfig != null ? Config.userConfig.PostExtension : "md";
-        public static string[] UploadExtensions => Config.userConfig != null ? Config.userConfig.UploadExtensions : new [] { "jpg", "jpeg", "png", "gif", "webp", "svg" };
+        public static string[] UploadExtensions => Config.userConfig != null ? Config.userConfig.UploadExtensions : new [] { "jpg", "jpeg", "png", "gif", "webp", "svg", "pdf" };
 
         private static UserConfig userConfig;
 

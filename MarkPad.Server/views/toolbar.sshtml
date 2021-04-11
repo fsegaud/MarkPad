@@ -22,7 +22,7 @@
 		<!-- Edit toolbar -->
 		@If.Model.EditMode
 			<span id="edit-toolbar" class="toolbar" style="float: left;">
-				<a href="/upload" title="Upload" class="icon" target="popup" onclick="window.open('../upload','name','width=800,height=150')">📷</a>
+				<a href="/upload" title="Upload" class="icon" target="popup" onclick="window.open('../upload','name','width=800,height=175')">📷</a>
 			</span>
 			<span id="enlarge-toolbar" class="toolbar" style="float: left;">
 				<a href="javascript:enlarge()" title="Enlarge" class="icon">🍆</a>

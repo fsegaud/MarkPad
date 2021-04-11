@@ -17,10 +17,7 @@ namespace MarkPad.Server
 
             this.Get(
                 "/",
-                args =>
-                {
-                    return View["upload", new UploadModel(this.Context, CssHelper.Page.Site)];
-                });
+                args => { return View["upload", new UploadModel(this.Context, CssHelper.Page.Site)]; });
 
             this.Post(
                 "/",
@@ -46,7 +43,7 @@ namespace MarkPad.Server
                         file.Value.CopyTo(fs);
                     }
 
-                    return View["upload", new UploadModel($"![](/{filepath.FixPathSlashes()})", this.Context, CssHelper.Page.Site)];
+                    return View["upload", new UploadModel(file.Name, filepath, this.Context, CssHelper.Page.Site)];
                 });
         }
 
@@ -57,10 +54,12 @@ namespace MarkPad.Server
             {
             }
 
-            public UploadModel(string link, Nancy.NancyContext context, CssHelper.Page page)
+            public UploadModel(string filename, string link, Nancy.NancyContext context, CssHelper.Page page)
                 : base(context, page)
             {
                 this.Link = link;
+                this.LinkSyntax = $"[{filename}](/{link.FixPathSlashes()})";
+                this.ImageSyntax = $"![](/{link.FixPathSlashes()})";
             }
 
             public UploadModel(bool error, Nancy.NancyContext context, CssHelper.Page page)
@@ -79,6 +78,16 @@ namespace MarkPad.Server
             }
 
             public string Link
+            {
+                get;
+            }
+
+            public string LinkSyntax
+            {
+                get;
+            }
+
+            public string ImageSyntax
             {
                 get;
             }
