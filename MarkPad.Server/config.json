@@ -1,0 +1,21 @@
+{
+  "Title": "MarkPad",
+  "ListenUri": "http://localhost",
+  "MaxConnections": 16,
+  "EnableTraces": false,
+  "RequireAuth": true,
+  "Username": "admin",
+  "Password": "yKkTF9ZUGOJIltYsYQyy6/qPW0EGK5+9k3ZrtPbLTh1hEqT9",
+  "DatabasePath": "markpad.db",
+  "DatabasePrevPath": "markpad.prev.db",
+  "PostDirectory": "posts",
+  "PostExtension": "md",
+  "UploadExtensions": [
+    "jpg",
+    "jpeg",
+    "png",
+    "gif",
+    "webp",
+    "svg"
+  ]
+}

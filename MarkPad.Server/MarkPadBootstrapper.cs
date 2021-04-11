@@ -11,7 +11,7 @@ namespace MarkPad.Server
         public override void Configure(Nancy.Configuration.INancyEnvironment environment)
         {
             base.Configure(environment);
-            environment.Tracing(Program.EnableTraces, Program.EnableTraces);
+            environment.Tracing(Config.EnableTraces, Config.EnableTraces);
         }
 
 

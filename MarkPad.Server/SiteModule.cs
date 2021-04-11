@@ -15,7 +15,7 @@ namespace MarkPad.Server
                 "/",
                 args =>
                 {
-                    if (Program.RequireAuth)
+                    if (Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }
@@ -38,7 +38,7 @@ namespace MarkPad.Server
                 "/share/{id:int}/{enabled:int}",
                 args =>
                 {
-                    if (Program.RequireAuth)
+                    if (Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }
@@ -57,7 +57,7 @@ namespace MarkPad.Server
                 "/archive/{id:int}",
                 args =>
                 {
-                    if (Program.RequireAuth)
+                    if (Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }
@@ -82,7 +82,7 @@ namespace MarkPad.Server
         {
             this.Css = CssHelper.GetCssStyles(context, page);
             this.IsLight = CssHelper.GetSkin(context) == CssHelper.Skin.Light;
-            this.IsLogged = !Program.RequireAuth || context.IsAuthenticated();
+            this.IsLogged = !Config.RequireAuth || context.IsAuthenticated();
         }
 
         public virtual bool EditMode => false;
@@ -91,7 +91,7 @@ namespace MarkPad.Server
 
         public virtual string Subtitle => string.Empty;
 
-        public string Title => Program.Title;
+        public string Title => Config.Title;
         public string Version => Program.Version;
         
         public bool IsLogged

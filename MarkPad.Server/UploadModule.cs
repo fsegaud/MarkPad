@@ -10,7 +10,7 @@ namespace MarkPad.Server
         public UploadModule()
             : base("/upload")
         {
-            if (Program.RequireAuth)
+            if (Config.RequireAuth)
             {
                 this.RequiresAuthentication();
             }
@@ -29,7 +29,7 @@ namespace MarkPad.Server
                     Nancy.HttpFile file = this.Request.Files.Single();
 
                     string fileExtension = System.IO.Path.GetExtension(file.Name).TrimStart('.');
-                    if (!System.IO.Path.HasExtension(file.Name) || !Program.UploadExtensions.Contains(fileExtension))
+                    if (!System.IO.Path.HasExtension(file.Name) || !Config.UploadExtensions.Contains(fileExtension))
                     {
                         return View["upload", new UploadModel(true, this.Context, CssHelper.Page.Site)];
                     }

@@ -22,7 +22,7 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
-                    if (!post.Shared && Program.RequireAuth)
+                    if (!post.Shared && Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }
@@ -43,7 +43,7 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
-                    if (!post.Shared && Program.RequireAuth)
+                    if (!post.Shared && Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }
@@ -64,7 +64,7 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
-                    if (!post.Shared && Program.RequireAuth)
+                    if (!post.Shared && Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }
@@ -82,7 +82,7 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
-                    if (!post.Shared && Program.RequireAuth)
+                    if (!post.Shared && Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }
@@ -100,7 +100,7 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
-                    if (!post.Shared && Program.RequireAuth)
+                    if (!post.Shared && Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }
@@ -121,7 +121,7 @@ namespace MarkPad.Server
                         return Nancy.HttpStatusCode.NotFound;
                     }
 
-                    if (!post.Shared && Program.RequireAuth)
+                    if (!post.Shared && Config.RequireAuth)
                     {
                         this.RequiresAuthentication();
                     }

@@ -10,7 +10,7 @@ namespace MarkPad.Server
         public NewModule()
             : base("/new")
         {
-            if (Program.RequireAuth)
+            if (Config.RequireAuth)
             {
                 this.RequiresAuthentication();
             }

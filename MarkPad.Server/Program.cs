@@ -4,21 +4,6 @@ namespace MarkPad.Server
 {
     internal class Program
     {
-        public const string Title = "MarkPad";
-        public const string ListenUri = "http://localhost";
-        public const int MaxConnections = 16;
-        public const bool EnableTraces = true;
-
-        public const string DatabasePath = "markpad.db";
-        public const string DatabasePrevPath = "markpad.prev.db";
-        public const string PostDirectory = "posts";
-        public const string PostExtension = "md";
-        public static string[] UploadExtensions = { "jpg", "jpeg", "png", "gif", "webp", "svg" };
-
-        public const bool RequireAuth = true;
-        public const string Username = "admin";
-        public const string Password = "yKkTF9ZUGOJIltYsYQyy6/qPW0EGK5+9k3ZrtPbLTh1hEqT9";
-
         public const string Version = "v0.1-dev";
 
         public static bool ExitRequest = false;
@@ -31,18 +16,22 @@ namespace MarkPad.Server
                 return;
             }
 
-            System.Console.Write($"Connecting to database '{DatabasePath}'... ");
-            Database.Connect(DatabasePath, DatabasePrevPath);
+            System.Console.Write($"Loading configuration... ");
+            bool result = Config.Load();
+            System.Console.WriteLine(result ? "Done." : "Failed, falling back on default config.");
+
+            System.Console.Write($"Connecting to database '{Config.DatabasePath}'... ");
+            Database.Connect(Config.DatabasePath, Config.DatabasePrevPath);
             //Database.CreateTestDataSet(true);
             System.Console.WriteLine("Done.");
 
             Nancy.Hosting.Self.HostConfiguration cfg = new Nancy.Hosting.Self.HostConfiguration();
             cfg.UrlReservations.CreateAutomatically = true;
-            cfg.MaximumConnectionCount = MaxConnections;
+            cfg.MaximumConnectionCount = Config.MaxConnections;
 
-            using (Nancy.Hosting.Self.NancyHost host = new Nancy.Hosting.Self.NancyHost(cfg, new System.Uri(ListenUri)))
+            using (Nancy.Hosting.Self.NancyHost host = new Nancy.Hosting.Self.NancyHost(cfg, new System.Uri(Config.ListenUri)))
             {
-                System.Console.Write($"Listening on '{ListenUri}'... ");
+                System.Console.Write($"Listening on '{Config.ListenUri}'... ");
                 host.Start();
                 System.Console.WriteLine("Done.");
 

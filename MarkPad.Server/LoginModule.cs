@@ -13,7 +13,7 @@ namespace MarkPad.Server
                 "/login",
                 args =>
                 {
-                    return View["login", new { Title = Program.Title, Errored = this.Request.Query.error.HasValue }];
+                    return View["login", new { Title = Config.Title, Errored = this.Request.Query.error.HasValue }];
                 });
 
             this.Post(

@@ -8,7 +8,7 @@ namespace MarkPad.Server
 
         public static System.Guid? ValidateUser(string username, string password)
         {
-            if (username == Program.Username && PasswordHelper.Check(password, Program.Password))
+            if (username == Config.Username && PasswordHelper.Check(password, Config.Password))
             {
                 return MarkPadUserMapper.guid;
             }
@@ -20,7 +20,7 @@ namespace MarkPad.Server
         {
             if (identifier == MarkPadUserMapper.guid)
             {
-                return new System.Security.Claims.ClaimsPrincipal(new System.Security.Principal.GenericIdentity(Program.Username));
+                return new System.Security.Claims.ClaimsPrincipal(new System.Security.Principal.GenericIdentity(Config.Username));
             }
 
             return null;

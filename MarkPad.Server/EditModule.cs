@@ -10,7 +10,7 @@ namespace MarkPad.Server
         public EditModule()
             : base("/edit")
         {
-            if (Program.RequireAuth)
+            if (Config.RequireAuth)
             {
                 this.RequiresAuthentication();
             }

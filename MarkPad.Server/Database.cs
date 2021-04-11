@@ -184,7 +184,7 @@ namespace MarkPad.Server
     {
         public static string Read(this Post post)
         {
-            string filePath = System.IO.Path.Combine(Program.PostDirectory, $"{post.Guid}.{Program.PostExtension}").TrimEnd('.');
+            string filePath = System.IO.Path.Combine(Config.PostDirectory, $"{post.Guid}.{Config.PostExtension}").TrimEnd('.');
             if (!System.IO.File.Exists(filePath))
             {
                 return null;
@@ -195,12 +195,12 @@ namespace MarkPad.Server
 
         public static void Write(this Post post, string content)
         {
-            if (!System.IO.Directory.Exists(Program.PostDirectory))
+            if (!System.IO.Directory.Exists(Config.PostDirectory))
             {
-                System.IO.Directory.CreateDirectory(Program.PostDirectory);
+                System.IO.Directory.CreateDirectory(Config.PostDirectory);
             }
 
-            string filePath = System.IO.Path.Combine(Program.PostDirectory, $"{post.Guid}.{Program.PostExtension}").TrimEnd('.');
+            string filePath = System.IO.Path.Combine(Config.PostDirectory, $"{post.Guid}.{Config.PostExtension}").TrimEnd('.');
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.File.Delete(filePath);
